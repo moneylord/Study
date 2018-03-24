@@ -20,9 +20,33 @@ namespace SampleUIStudy
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public MainWindow()
+        public MainWindowVM ViewModel
+        {
+            get { return DataContext as MainWindowVM; }
+        }
+
+        public MainWindow()
 		{
 			InitializeComponent();
+
+            ViewModel.OnVisibleReportServerList = VisibleListBoxReport;
+            ViewModel.OnVisibleRestServiceList = VisibleListBoxRest;
 		}
+
+        public void VisibleListBoxReport(bool _bVisible)
+        {
+            if (_bVisible)
+                ViewModel.ReportServerListVisible = Visibility.Visible;
+            else
+                ViewModel.ReportServerListVisible = Visibility.Hidden;
+        }
+
+        public void VisibleListBoxRest(bool _bVisible)
+        {
+            if (_bVisible)
+                ViewModel.RestServiceVisible = Visibility.Visible;
+            else
+                ViewModel.RestServiceVisible = Visibility.Hidden;
+        }
 	}
 }
