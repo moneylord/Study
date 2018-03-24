@@ -4,6 +4,7 @@
 
 - [x] Make 1st Step Xaml UI 
 - [x] Make 2nd Step Xaml UI 
-- [ ] Bind Command
-- [ ] Bind Data in Control
+- [x] Bind Command
+- [x] Bind Data in Control
+- [ ] Bind Event Radio button
 - [ ] ???
