@@ -248,6 +248,8 @@ namespace SampleUIStudy
 
         public ListVisivilityAction OnVisibleReportServerList { get; set; }
         public ListVisivilityAction OnVisibleRestServiceList { get; set; }
+
+        public CheckedChangedRadioBtn OnCheckedChangedRBtn { get; set; }
     }
 
     public class LinkListItem
@@ -258,4 +260,5 @@ namespace SampleUIStudy
     }
 
     public delegate void ListVisivilityAction(bool bOpen);
+    public delegate void CheckedChangedRadioBtn(int index);
 }

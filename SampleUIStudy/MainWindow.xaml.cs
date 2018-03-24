@@ -31,7 +31,11 @@ namespace SampleUIStudy
 
             ViewModel.OnVisibleReportServerList = VisibleListBoxReport;
             ViewModel.OnVisibleRestServiceList = VisibleListBoxRest;
-		}
+            ViewModel.OnCheckedChangedRBtn = CheckedChangedRBtn;
+
+            // Default Disable setting.
+            CheckedChangedRBtn(1);
+        }
 
         public void VisibleListBoxReport(bool _bVisible)
         {
@@ -47,6 +51,53 @@ namespace SampleUIStudy
                 ViewModel.RestServiceVisible = Visibility.Visible;
             else
                 ViewModel.RestServiceVisible = Visibility.Hidden;
+        }
+
+        public void OnCheckedChanged(object sender, RoutedEventArgs args)
+        {
+            try
+            {
+                var rb = sender as RadioButton;
+
+                if (rb.Name == "rBtn1")
+                    CheckedChangedRBtn(1);
+                else if (rb.Name == "rBtn2")
+                    CheckedChangedRBtn(2);
+                else
+                    CheckedChangedRBtn(3);
+
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        public void CheckedChangedRBtn(int idx)
+        {
+            switch(idx)
+            {
+                case 1:
+                    {
+                        gridReportServer.IsEnabled = false;
+                        gridRestService.IsEnabled = false;
+                    }
+                    break;
+                case 2:
+                    {
+                        gridReportServer.IsEnabled = true;
+                        gridRestService.IsEnabled = false;
+                    }
+                    break;
+                case 3:
+                    {
+                        gridReportServer.IsEnabled = false;
+                        gridRestService.IsEnabled = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 	}
 }
