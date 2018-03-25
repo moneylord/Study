@@ -6,5 +6,7 @@
 - [x] Make 2nd Step Xaml UI 
 - [x] Bind Command
 - [x] Bind Data in Control
-- [ ] Bind Event Radio button
+- [x] Bind Event Radio button
+- [ ] ListBox item change Color when mouse hover
+- [ ] BUG_ MainWindow Height are changed when item add -_-;;
 - [ ] ???
