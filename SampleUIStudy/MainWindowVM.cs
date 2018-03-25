@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 
 namespace SampleUIStudy
 {
@@ -86,9 +87,9 @@ namespace SampleUIStudy
                 iList.Add(item2);
                 iList.Add(item);
                 iList.Add(item2);
-                iList.Add(item3);
-                iList.Add(item2);
-                iList.Add(item);
+                //iList.Add(item3);
+                //iList.Add(item2);
+                //iList.Add(item);
 
                 LinkListItem = new ObservableCollection<LinkListItem>(iList);
             }
@@ -246,10 +247,26 @@ namespace SampleUIStudy
             }
         }
 
+        private Color _listItemBackgroundColor;
+        public Color ListItemBackgroundColor
+        {
+            get
+            {
+                return _listItemBackgroundColor;
+            }
+            set
+            {
+                _listItemBackgroundColor = value;
+                OnPropertyChanged("ListItemBackgroundColor");
+            }
+        }
+
         public ListVisivilityAction OnVisibleReportServerList { get; set; }
         public ListVisivilityAction OnVisibleRestServiceList { get; set; }
 
         public CheckedChangedRadioBtn OnCheckedChangedRBtn { get; set; }
+
+        public ListItemColorAction OnMouseHover { get; set; }
     }
 
     public class LinkListItem
@@ -261,4 +278,5 @@ namespace SampleUIStudy
 
     public delegate void ListVisivilityAction(bool bOpen);
     public delegate void CheckedChangedRadioBtn(int index);
+    public delegate void ListItemColorAction();
 }

@@ -60,12 +60,21 @@ namespace SampleUIStudy
                 var rb = sender as RadioButton;
 
                 if (rb.Name == "rBtn1")
+                {
                     CheckedChangedRBtn(1);
+                    VisibleListBoxReport(false);
+                    VisibleListBoxRest(false);
+                }
                 else if (rb.Name == "rBtn2")
+                {
                     CheckedChangedRBtn(2);
+                    VisibleListBoxRest(false);
+                }
                 else
+                {
                     CheckedChangedRBtn(3);
-
+                    VisibleListBoxReport(false);
+                }
             }
             catch (Exception)
             {
@@ -99,5 +108,37 @@ namespace SampleUIStudy
                     break;
             }
         }
-	}
+
+        private void btnGroupItem_MouseEnter(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var test = sender as Button;
+
+                SolidColorBrush b = new SolidColorBrush(Colors.Pink);
+
+                test.Background = b;
+            }
+            catch(Exception)
+            {
+
+            }
+        }
+
+        private void btnGroupItem_MouseLeave(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var test = sender as Button;
+
+                SolidColorBrush b = new SolidColorBrush(Colors.Green);
+
+                test.Background = b;
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+    }
 }

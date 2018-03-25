@@ -10,7 +10,34 @@
     <Window.DataContext>
         <local:MainWindowVM/>
     </Window.DataContext>
-
+    <Window.Resources>
+        <Style x:Key="TransparentStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="White" BorderThickness="1" CornerRadius="2">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="LightSkyBlue"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="False">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Background="Transparent">
+                                <ContentPresenter></ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
     <ScrollViewer ScrollViewer.CanContentScroll="True">
         <Grid>
             <Grid.RowDefinitions>
@@ -84,14 +111,14 @@
                 </Border>
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Background="LightGray" FlowDirection="RightToLeft" Orientation="Horizontal" >
+            <StackPanel Grid.Row="1" Margin="0,0,0,0" Background="LightGray" FlowDirection="RightToLeft" Orientation="Horizontal" >
                 <Button Width="80" Height="20" Margin="20,0,20,0" HorizontalAlignment="Left"  Content="Cancel"></Button>
                 <Button Width="80" Height="20" Margin="0,0,20,0" HorizontalAlignment="Left"  Content="OK"></Button>
             </StackPanel>
 
 
             <!-- Report List -->
-            <Grid x:Name="ListContainer" Visibility="{Binding ReportServerListVisible}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30 140 30 130" ClipToBounds="True">
+            <Grid x:Name="ListContainer" Visibility="{Binding ReportServerListVisible}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30 140 30 250" ClipToBounds="True">
                 <Border BorderBrush="#ffbec5cd" BorderThickness="1" CornerRadius="2" Background="White" />
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -100,6 +127,7 @@
                             <DataTemplate>
                                 <Button 
                                 x:Name="btnGroupItem"
+                                    Style="{StaticResource TransparentStyle}"
                                 Cursor="Hand"
                                 Height="40"
                                 VerticalAlignment="Center"
@@ -135,6 +163,7 @@
                             <DataTemplate>
                                 <Button 
                                 x:Name="btnGroupItem"
+                                Style="{StaticResource TransparentStyle}"
                                 Cursor="Hand"
                                 Height="40"
                                 VerticalAlignment="Center"
