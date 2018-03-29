@@ -57,7 +57,7 @@
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label x:Name="lblUrl" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="-5, 0, 0, 0" Content="URL"/>
-                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid x:Name="gridReport" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="30"></ColumnDefinition>
@@ -84,7 +84,7 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label x:Name="lblRestUrl" Grid.Row="0" Grid.Column="0" Margin="-5, 0, 0, 0" Content="URL"/>
-                    <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid x:Name="gridRest" Grid.Row="1" Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="30"></ColumnDefinition>
@@ -154,10 +154,10 @@
             <!--Report service Group의 Popup Listview-->
             <Popup x:Name="ListContainer" Height="200" 
                    Placement="Bottom" PlacementTarget="{Binding ElementName=tbxReportUrl}"
-                   IsOpen="False" StaysOpen="True"
+                   IsOpen="False" StaysOpen="True" VerticalOffset="2"
                    HorizontalAlignment="Stretch">
                 <ListView x:Name="DropDownListView"
-                          Width="{Binding ElementName=lblUrl, Path=ActualWidth}"
+                          Width="{Binding ElementName=gridReport, Path=ActualWidth}"
                           ItemsSource="{Binding CListItem}"
                           ItemTemplate="{StaticResource ListItemDesignTemplate}">
                     <ListView.ItemContainerStyle>
@@ -172,10 +172,10 @@
             <!--Rest Service Group의 Popup Listview-->
             <Popup x:Name="RestListContainer" Height="200" 
                    Placement="Bottom" PlacementTarget="{Binding ElementName=tbxRest}"
-                   IsOpen="False" StaysOpen="True"
+                   IsOpen="False" StaysOpen="True" VerticalOffset="2"
                    HorizontalAlignment="Stretch">
                 <ListView x:Name="RestDropDownList"
-                          Width="{Binding ElementName=lblRestUrl, Path=ActualWidth}"
+                          Width="{Binding ElementName=gridRest, Path=ActualWidth}"
                           ItemsSource="{Binding CListItem}"
                           ItemTemplate="{StaticResource ListItemDesignTemplate}">
                     <ListView.ItemContainerStyle>

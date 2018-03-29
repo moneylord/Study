@@ -271,15 +271,15 @@ namespace SampleUIStudy
 				if (_value < 0)
 				{
 					ListItemVisible = Visibility.Hidden;
-					BackColor = new SolidColorBrush(Colors.Gold);
+					BackColor = new SolidColorBrush(Colors.Tomato);
 				}
 				else
 				{
 					ListItemVisible = Visibility.Visible;
 					if (_value == 0)
-						BackColor = new SolidColorBrush(Colors.Turquoise);
+						BackColor = new SolidColorBrush(Colors.Transparent);
 					else
-						BackColor = new SolidColorBrush(Colors.Tomato);
+						BackColor = new SolidColorBrush(Colors.Turquoise);
 				}
 			}
 		}
