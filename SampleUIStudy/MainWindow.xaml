@@ -6,38 +6,32 @@
         xmlns:local="clr-namespace:SampleUIStudy"
         mc:Ignorable="d"
         Title="Reporting Engine Connection" WindowStyle="ToolWindow" 
-        Height="500" Width="400" MinHeight="200" MinWidth="300">
+        Height="500" Width="400" MinHeight="200" MinWidth="300"
+        PreviewMouseDown="Window_PreviewMouseDown"
+        Deactivated="Window_Deactivated">
     <Window.DataContext>
         <local:MainWindowVM/>
     </Window.DataContext>
     <Window.Resources>
-        <Style x:Key="TransparentStyle" TargetType="{x:Type Button}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border BorderBrush="White" BorderThickness="1" CornerRadius="2">
-                            <Border.Style>
-                                <Style TargetType="{x:Type Border}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="LightSkyBlue"/>
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="False">
-                                            <Setter Property="Background" Value="LightGray"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Grid Background="Transparent">
-                                <ContentPresenter></ContentPresenter>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+
+        <!--Popup Listview Item Template-->
+        <DataTemplate x:Key="ListItemDesignTemplate" DataType="">
+            <Grid Background="{Binding BackColor}" Height="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="40"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Margin="5" BorderBrush="Black" BorderThickness="1" >
+                    <Image Source="{Binding CImagePath}" Stretch="UniformToFill" Width="50" Height="50" Visibility="{Binding ListItemVisible}"/>
+                </Border>
+                <TextBlock Grid.Column="1" Text="{Binding CImageName}" Margin="5, 0, 5,0" TextBlock.FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding Value}" Margin="5, 0, 5,0" TextBlock.FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            </Grid>
+        </DataTemplate>
+        
     </Window.Resources>
-    
+
     <ScrollViewer ScrollViewer.CanContentScroll="True">
         <Grid>
             <Grid.RowDefinitions>
@@ -45,8 +39,11 @@
                 <RowDefinition Height="50"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Margin="10">
+                <!--Embedded Group Area-->
                 <Label Content="Choose reporting engine" FontWeight="Bold" FontSize="14" Margin="-5, 0, 0, 0"/>
                 <RadioButton x:Name="rBtn1" Checked ="OnCheckedChanged" IsChecked="True"  Margin="0, 10, 0, 0" Content="Embedded" GroupName="rGroup" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+                <!--Report Service Group Area-->
                 <RadioButton x:Name="rBtn2" Checked="OnCheckedChanged"  Margin="0, 10, 0, 0" Content="Reprot server" GroupName="rGroup" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Grid x:Name="gridReportServer" Margin="20, 0, 20, 0" >
                     <Grid.RowDefinitions>
@@ -59,7 +56,7 @@
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="-5, 0, 0, 0" Content="URL"/>
+                    <Label x:Name="lblUrl" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="-5, 0, 0, 0" Content="URL"/>
                     <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -77,6 +74,8 @@
                     <Label Grid.Row="2" Grid.Column="1" Margin="-5, 0, 0, 0" Content="Password:"/>
                     <PasswordBox Grid.Row="3" Grid.Column="1" Height="23"  />
                 </Grid>
+                
+                <!--REST Service Group Area-->
                 <RadioButton x:Name="rBtn3" Checked="OnCheckedChanged" Margin="0, 10, 0, 0" Content="REST service" GroupName="rGroup" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Grid x:Name="gridRestService" Margin="20, 0, 20, 0">
                     <Grid.RowDefinitions>
@@ -84,15 +83,15 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Margin="-5, 0, 0, 0" Content="URL"/>
+                    <Label x:Name="lblRestUrl" Grid.Row="0" Grid.Column="0" Margin="-5, 0, 0, 0" Content="URL"/>
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="30"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Height="23" TextWrapping="Wrap" Text="{Binding SelectedItemRest.ItemName}"/>
+                        <TextBox x:Name="tbxRest" Grid.Column="0" Height="23" TextWrapping="Wrap" Text="{Binding SelectedItemRest.ItemName}"/>
                         <Button x:Name="btnRest" Grid.Column="1" Width="25" Margin="5, 0, 0, 0" Content="{Binding BtnContent}"
-                                Command="{Binding BtnCommand}" CommandParameter="{Binding ElementName=ListContainerRest}"></Button>
+                                Command="{Binding BtnCommand}" CommandParameter="{Binding ElementName=RestListContainer}"></Button>
                     </Grid>
                     <CheckBox Grid.Row="2" Grid.Column="0" Margin="-1, 10, 0, 0" Content="Use default credentials" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 </Grid>
@@ -109,85 +108,84 @@
                     </Border.BorderBrush>
                     <TextBlock Height="50" TextWrapping="Wrap" Text="" IsEnabled="False" Background="LightGray" />
                 </Border>
+               
+                <!--<ComboBox x:Name="testCombo" Margin="10" ItemsSource="{Binding CListItem}"
+                          Width="30" Height="20"  HorizontalAlignment="Right">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3" 
+                                  Width="{Binding ElementName=lblUrl, Path=ActualWidth}"
+                                  Background="Transparent">
+                                <Grid.BitmapEffect>
+                                    <BevelBitmapEffect EdgeProfile="BulgedUp"/>
+                                </Grid.BitmapEffect>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" Width="50" Height="50" Margin="10"
+                                        HorizontalAlignment="Stretch"
+                                        Source="{Binding CImagePath}"/>
+                                <StackPanel Grid.Column="1" Margin="10" Orientation="Horizontal">
+                                    <TextBlock Foreground="Blue"
+                                                FontWeight="Bold"
+                                                Text="{Binding CButtonName}"
+                                                TextWrapping="Wrap"
+                                                Margin="10"/>
+                                    <TextBlock Foreground="Red"
+                                                FontWeight="Bold"
+                                                Text="{Binding CTextName}"
+                                                TextWrapping="Wrap"
+                                                Margin="10"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>-->
             </StackPanel>
 
+            <!--OK , Cancel Button Area-->
             <StackPanel Grid.Row="1" Margin="0,0,0,0" Background="LightGray" FlowDirection="RightToLeft" Orientation="Horizontal" >
                 <Button Width="80" Height="20" Margin="20,0,20,0" HorizontalAlignment="Left"  Content="Cancel"></Button>
                 <Button Width="80" Height="20" Margin="0,0,20,0" HorizontalAlignment="Left"  Content="OK"></Button>
             </StackPanel>
 
+            <!--Report service Group의 Popup Listview-->
+            <Popup x:Name="ListContainer" Height="200" 
+                   Placement="Bottom" PlacementTarget="{Binding ElementName=tbxReportUrl}"
+                   IsOpen="False" StaysOpen="True"
+                   HorizontalAlignment="Stretch">
+                <ListView x:Name="DropDownListView"
+                          Width="{Binding ElementName=lblUrl, Path=ActualWidth}"
+                          ItemsSource="{Binding CListItem}"
+                          ItemTemplate="{StaticResource ListItemDesignTemplate}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </Popup>
 
-            <!-- Report List -->
-            <Grid x:Name="ListContainer" Visibility="{Binding ReportServerListVisible}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30 140 30 250" ClipToBounds="True">
-                <Border BorderBrush="#ffbec5cd" BorderThickness="1" CornerRadius="2" Background="White" />
-
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <ItemsControl ItemsSource="{Binding LinkListItem}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button 
-                                x:Name="btnGroupItem"
-                                    Style="{StaticResource TransparentStyle}"
-                                Cursor="Hand"
-                                Height="40"
-                                VerticalAlignment="Center"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.OnSelectedItemReport}"
-                                CommandParameter="{Binding}">
-                                    <TextBlock Margin="0,8"
-                                       FontFamily="Malgun Gothic"
-                                       Foreground="#576171"
-                                       FontWeight="SemiBold"
-                                       FontSize="14px"
-                                       VerticalAlignment="Center" 
-                                       Text="{Binding ItemName}"/>
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-
-                </ScrollViewer>
-            </Grid>
-
-            <!-- Rest List -->
-            <Grid x:Name="ListContainerRest" Visibility="{Binding RestServiceVisible}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30 260 30 130" ClipToBounds="True">
-                <Border BorderBrush="#ffbec5cd" BorderThickness="1" CornerRadius="2" Background="White" />
-
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <ItemsControl ItemsSource="{Binding LinkListItem}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button 
-                                x:Name="btnGroupItem"
-                                Style="{StaticResource TransparentStyle}"
-                                Cursor="Hand"
-                                Height="40"
-                                VerticalAlignment="Center"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.OnSelectedItemRest}"
-                                CommandParameter="{Binding}">
-                                    <TextBlock Margin="0,8"
-                                       FontFamily="Malgun Gothic"
-                                       Foreground="#576171"
-                                       FontWeight="SemiBold"
-                                       FontSize="14px"
-                                       VerticalAlignment="Center" 
-                                       Text="{Binding ItemName}"/>
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-
-                </ScrollViewer>
-            </Grid>
+            <!--Rest Service Group의 Popup Listview-->
+            <Popup x:Name="RestListContainer" Height="200" 
+                   Placement="Bottom" PlacementTarget="{Binding ElementName=tbxRest}"
+                   IsOpen="False" StaysOpen="True"
+                   HorizontalAlignment="Stretch">
+                <ListView x:Name="RestDropDownList"
+                          Width="{Binding ElementName=lblRestUrl, Path=ActualWidth}"
+                          ItemsSource="{Binding CListItem}"
+                          ItemTemplate="{StaticResource ListItemDesignTemplate}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </Popup>
         </Grid>
     </ScrollViewer>
 </Window>

@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Controls.Primitives;
 
 namespace SampleUIStudy
 {
@@ -48,7 +49,7 @@ namespace SampleUIStudy
             InitListItem();
         }
 
-        public void AddListItem(LinkListItem _item)
+        public void AddListItem(cListItem _item)
         {
             try
             {
@@ -64,35 +65,32 @@ namespace SampleUIStudy
         {
             try
             {
-                LinkListItem item = new LinkListItem();
-                item.ItemName = "Test11111111";
-                item.UserName = "rock";
-                item.UserPwd = "qwerty";
+				cListItem citem = new cListItem();
+				citem.CImageName = "crystal.png";
+				citem.Value = 10;
+				citem.CImagePath = @"C:\Users\Partner\Desktop\Sample Attach Data\crystal.png";
 
-                LinkListItem item2 = new LinkListItem();
-                item2.ItemName = "Test2222222";
-                item2.UserName = "iqos";
-                item2.UserPwd = "1234";
+				cListItem citem2 = new cListItem();
+				citem2.CImageName = "Down.png";
+				citem2.Value = -10;
+				citem2.CImagePath = @"C:\Users\Partner\Desktop\Sample Attach Data\Down.png";
 
-                LinkListItem item3 = new LinkListItem();
-                item3.ItemName = "Test3333333";
-                item3.UserName = "Holis";
-                item3.UserPwd = "coffee";
+				cListItem citem3 = new cListItem();
+				citem3.CImageName = "star.png";
+				citem3.Value = 0;
+				citem3.CImagePath = @"C:\Users\Partner\Desktop\Sample Attach Data\star.png";
 
-                List<LinkListItem> iList = new List<LinkListItem>();
+				List<cListItem> ciList = new List<cListItem>();
 
-                iList.Add(item);
-                iList.Add(item2);
-                iList.Add(item3);
-                iList.Add(item2);
-                iList.Add(item);
-                iList.Add(item2);
-                //iList.Add(item3);
-                //iList.Add(item2);
-                //iList.Add(item);
+				ciList.Add(citem);
+				ciList.Add(citem2);
+				ciList.Add(citem3);
+				ciList.Add(citem);
+				ciList.Add(citem3);
+				ciList.Add(citem2);
 
-                LinkListItem = new ObservableCollection<LinkListItem>(iList);
-            }
+				CListItem = new ObservableCollection<cListItem>(ciList);				
+			}
             catch (Exception)
             {
 
@@ -117,8 +115,8 @@ namespace SampleUIStudy
         /// <summary>
         /// If List Item need Extend Data then use this class object. 
         /// </summary>
-        public ObservableCollection<LinkListItem> _linkListItem { get; set; }
-        public ObservableCollection<LinkListItem> LinkListItem
+        public ObservableCollection<cListItem> _linkListItem { get; set; }
+        public ObservableCollection<cListItem> LinkListItem
         {
             get { return _linkListItem; }
             set
@@ -135,9 +133,9 @@ namespace SampleUIStudy
             {
                 return _onSelectedItemReport ?? (_onSelectedItemReport = new RelayCommand<object>(_ =>
                 {
-                    if (null != _ as LinkListItem)
+                    if (null != _ as cListItem)
                     {
-                        var item = _ as LinkListItem;
+                        var item = _ as cListItem;
                         SelectedItem = item;
 
                         OnVisibleReportServerList(false);
@@ -153,9 +151,9 @@ namespace SampleUIStudy
             {
                 return _onSelectedItemRest ?? (_onSelectedItemRest = new RelayCommand<object>(_ =>
                 {
-                    if (null != _ as LinkListItem)
+                    if (null != _ as cListItem)
                     {
-                        var item = _ as LinkListItem;
+                        var item = _ as cListItem;
                         SelectedItemRest = item;
 
                         OnVisibleRestServiceList(false);
@@ -164,8 +162,8 @@ namespace SampleUIStudy
             }
         }
 
-        public LinkListItem _selectedItems;
-        public LinkListItem SelectedItem
+        public cListItem _selectedItems;
+        public cListItem SelectedItem
         {
             get
             {
@@ -178,8 +176,8 @@ namespace SampleUIStudy
             }
         }
 
-        public LinkListItem _selectedItemsRest;
-        public LinkListItem SelectedItemRest
+        public cListItem _selectedItemsRest;
+        public cListItem SelectedItemRest
         {
             get
             {
@@ -196,72 +194,43 @@ namespace SampleUIStudy
         {
             try
             {
-                var gd = obj as Grid;
+                var gd = obj as Popup;
 
                 if( gd.Name == "ListContainerRest" )
                 {
-                    if (RestServiceVisible == Visibility.Hidden)
-                        RestServiceVisible = Visibility.Visible;
-                    else
-                        RestServiceVisible = Visibility.Hidden;
                 }
                 else
                 {
-                    if (ReportServerListVisible == Visibility.Hidden)
-                        ReportServerListVisible = Visibility.Visible;
-                    else
-                        ReportServerListVisible = Visibility.Hidden;
-                }
+					if( gd.IsOpen == false )
+						gd.IsOpen = true;
+					else
+						gd.IsOpen = false;
+				}
             }
             catch(Exception)
             {
 
             }
         }
+    
 
-        private Visibility _reportServerListVisible = Visibility.Hidden;
-        public Visibility ReportServerListVisible
-        {
-            get
-            {
-                return _reportServerListVisible;
-            }
-            set
-            {
-                _reportServerListVisible = value;
-                OnPropertyChanged("ReportServerListVisible");
-            }
-        }
+		public string ImagePath
+		{
+			get { return @"C:\Users\Partner\Desktop\Sample Attach Data\crystal.png"; }
+		}
 
-        private Visibility _restServiceVisible = Visibility.Hidden;
-        public Visibility RestServiceVisible
-        {
-            get
-            {
-                return _restServiceVisible;
-            }
-            set
-            {
-                _restServiceVisible = value;
-                OnPropertyChanged("RestServiceVisible");
-            }
-        }
+		public ObservableCollection<cListItem> _cListItem { get; set; }
+		public ObservableCollection<cListItem> CListItem
+		{
+			get { return _cListItem; }
+			set
+			{
+				_cListItem = value;
+				OnPropertyChanged("CListItem");
+			}
+		}
 
-        private Color _listItemBackgroundColor;
-        public Color ListItemBackgroundColor
-        {
-            get
-            {
-                return _listItemBackgroundColor;
-            }
-            set
-            {
-                _listItemBackgroundColor = value;
-                OnPropertyChanged("ListItemBackgroundColor");
-            }
-        }
-
-        public ListVisivilityAction OnVisibleReportServerList { get; set; }
+		public ListVisivilityAction OnVisibleReportServerList { get; set; }
         public ListVisivilityAction OnVisibleRestServiceList { get; set; }
 
         public CheckedChangedRadioBtn OnCheckedChangedRBtn { get; set; }
@@ -275,6 +244,77 @@ namespace SampleUIStudy
         public string UserName { get; set; }
         public string UserPwd { get; set; }
     }
+
+	public class cListItem : INotifyPropertyChanged
+	{
+		#region NotifyProperty chaned
+		public event PropertyChangedEventHandler PropertyChanged;
+		[NotifyPropertyChangedInvocator]
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChangedEventHandler handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+		#endregion
+
+		private int _value;
+		public int Value
+		{
+			get
+			{
+				return _value;
+			}
+				
+			set
+			{
+				_value = value;
+				if (_value < 0)
+				{
+					ListItemVisible = Visibility.Hidden;
+					BackColor = new SolidColorBrush(Colors.Gold);
+				}
+				else
+				{
+					ListItemVisible = Visibility.Visible;
+					if (_value == 0)
+						BackColor = new SolidColorBrush(Colors.Turquoise);
+					else
+						BackColor = new SolidColorBrush(Colors.Tomato);
+				}
+			}
+		}
+
+		private Visibility _listItemVisible = Visibility.Visible;
+		public Visibility ListItemVisible
+		{
+			get
+			{
+				return _listItemVisible;
+			}
+			set
+			{
+				_listItemVisible = value;
+				OnPropertyChanged("ListItemVisible");
+			}
+		}
+
+		private SolidColorBrush _backColor = new SolidColorBrush(Colors.Transparent);
+		public SolidColorBrush BackColor
+		{
+			get
+			{
+				return _backColor;
+			}
+			set
+			{
+				_backColor = value;
+				OnPropertyChanged("BackColor");
+			}
+		}
+
+		public string CImageName { get; set; }
+		public string CImagePath { get; set; }		
+	}
 
     public delegate void ListVisivilityAction(bool bOpen);
     public delegate void CheckedChangedRadioBtn(int index);

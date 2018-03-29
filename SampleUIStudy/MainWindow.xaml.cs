@@ -29,7 +29,7 @@ namespace SampleUIStudy
 		{
 			InitializeComponent();
 
-            ViewModel.OnVisibleReportServerList = VisibleListBoxReport;
+			ViewModel.OnVisibleReportServerList = VisibleListBoxReport;
             ViewModel.OnVisibleRestServiceList = VisibleListBoxRest;
             ViewModel.OnCheckedChangedRBtn = CheckedChangedRBtn;
 
@@ -37,108 +37,132 @@ namespace SampleUIStudy
             CheckedChangedRBtn(1);
         }
 
-        public void VisibleListBoxReport(bool _bVisible)
-        {
-            if (_bVisible)
-                ViewModel.ReportServerListVisible = Visibility.Visible;
-            else
-                ViewModel.ReportServerListVisible = Visibility.Hidden;
-        }
+		#region MVVM
+		public void VisibleListBoxReport(bool _bVisible)
+		{
+			//if (_bVisible)
+			//	ViewModel.ReportServerListVisible = Visibility.Visible;
+			//else
+			//	ViewModel.ReportServerListVisible = Visibility.Hidden;
+		}
 
-        public void VisibleListBoxRest(bool _bVisible)
-        {
-            if (_bVisible)
-                ViewModel.RestServiceVisible = Visibility.Visible;
-            else
-                ViewModel.RestServiceVisible = Visibility.Hidden;
-        }
+		public void VisibleListBoxRest(bool _bVisible)
+		{
+			//if (_bVisible)
+			//	ViewModel.RestServiceVisible = Visibility.Visible;
+			//else
+			//	ViewModel.RestServiceVisible = Visibility.Hidden;
+		}
+		#endregion
 
-        public void OnCheckedChanged(object sender, RoutedEventArgs args)
-        {
-            try
-            {
-                var rb = sender as RadioButton;
+		#region User defined function
+		public void CheckedChangedRBtn(int idx)
+		{
+			switch (idx)
+			{
+				case 1:
+					{
+						gridReportServer.IsEnabled = false;
+						gridRestService.IsEnabled = false;
+					}
+					break;
+				case 2:
+					{
+						gridReportServer.IsEnabled = true;
+						gridRestService.IsEnabled = false;
+					}
+					break;
+				case 3:
+					{
+						gridReportServer.IsEnabled = false;
+						gridRestService.IsEnabled = true;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		#endregion
 
-                if (rb.Name == "rBtn1")
-                {
-                    CheckedChangedRBtn(1);
-                    VisibleListBoxReport(false);
-                    VisibleListBoxRest(false);
-                }
-                else if (rb.Name == "rBtn2")
-                {
-                    CheckedChangedRBtn(2);
-                    VisibleListBoxRest(false);
-                }
-                else
-                {
-                    CheckedChangedRBtn(3);
-                    VisibleListBoxReport(false);
-                }
-            }
-            catch (Exception)
-            {
+		#region Event
+		private void Window_Deactivated(object sender, EventArgs e)
+		{
+			if (ListContainer.IsOpen || RestListContainer.IsOpen)
+			{
+				ListContainer.IsOpen = false;
+				RestListContainer.IsOpen = false;
+			}
+		}
 
-            }
-        }
+		private void btnGroupItem_MouseEnter(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				var test = sender as Button;
 
-        public void CheckedChangedRBtn(int idx)
-        {
-            switch(idx)
-            {
-                case 1:
-                    {
-                        gridReportServer.IsEnabled = false;
-                        gridRestService.IsEnabled = false;
-                    }
-                    break;
-                case 2:
-                    {
-                        gridReportServer.IsEnabled = true;
-                        gridRestService.IsEnabled = false;
-                    }
-                    break;
-                case 3:
-                    {
-                        gridReportServer.IsEnabled = false;
-                        gridRestService.IsEnabled = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
+				SolidColorBrush b = new SolidColorBrush(Colors.Pink);
 
-        private void btnGroupItem_MouseEnter(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                var test = sender as Button;
+				test.Background = b;
+			}
+			catch (Exception)
+			{
 
-                SolidColorBrush b = new SolidColorBrush(Colors.Pink);
+			}
+		}
 
-                test.Background = b;
-            }
-            catch(Exception)
-            {
+		private void btnGroupItem_MouseLeave(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				var test = sender as Button;
 
-            }
-        }
+				SolidColorBrush b = new SolidColorBrush(Colors.Green);
 
-        private void btnGroupItem_MouseLeave(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                var test = sender as Button;
+				test.Background = b;
+			}
+			catch (Exception)
+			{
 
-                SolidColorBrush b = new SolidColorBrush(Colors.Green);
+			}
+		}
 
-                test.Background = b;
-            }
-            catch (Exception)
-            {
+		private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (ListContainer.IsOpen || RestListContainer.IsOpen)
+			{
+				ListContainer.IsOpen = false;
+				RestListContainer.IsOpen = false;
+			}
+		}
 
-            }
-        }
-    }
+		public void OnCheckedChanged(object sender, RoutedEventArgs args)
+		{
+			try
+			{
+				var rb = sender as RadioButton;
+
+				if (rb.Name == "rBtn1")
+				{
+					CheckedChangedRBtn(1);
+					VisibleListBoxReport(false);
+					VisibleListBoxRest(false);
+				}
+				else if (rb.Name == "rBtn2")
+				{
+					CheckedChangedRBtn(2);
+					VisibleListBoxRest(false);
+				}
+				else
+				{
+					CheckedChangedRBtn(3);
+					VisibleListBoxReport(false);
+				}
+			}
+			catch (Exception)
+			{
+
+			}
+		}
+		#endregion
+	}
 }
