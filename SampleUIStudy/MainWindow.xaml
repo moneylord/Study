@@ -15,19 +15,62 @@
     <Window.Resources>
 
         <!--Popup Listview Item Template-->
-        <DataTemplate x:Key="ListItemDesignTemplate" DataType="">
+        <DataTemplate x:Key="ListItemDesignTemplate" DataType="{x:Type local:MainWindowVM}">
             <Grid Background="{Binding BackColor}" Height="50">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Margin="5" BorderBrush="Black" BorderThickness="1" >
+                    <!--MoreThanZero라는 Property를 두어 해당 value에 따라 datatrigger 처리. -->
+                    <!--<Image Width="50" Height="50" Stretch="UniformToFill" Source="{Binding CImagePath}">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding MoreThanZero}" Value="True">
+                                        <Setter Property="Visibility" Value="{Binding ListItemVisible}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MoreThanZero}" Value="False">
+                                        <Setter Property="Visibility" Value="{Binding ListItemVisible}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>-->
+                    <!--Image 여러개를 같은 위치에 두고 datatrigger 상황에 따라 visible 처리.-->
+                    <Image x:Name="FirstImage" Width="50" Height="50" Stretch="UniformToFill" Source="D:\Sample\star.png"/>
+                    
+                </Border>
                 <Border Grid.Column="0" Margin="5" BorderBrush="Black" BorderThickness="1" >
-                    <Image Source="{Binding CImagePath}" Stretch="UniformToFill" Width="50" Height="50" Visibility="{Binding ListItemVisible}"/>
+                    <Image x:Name="SecondImage" Width="50" Height="50" Stretch="UniformToFill" Source="D:\Sample\Down.png"/>
+                </Border>
+                <Border Grid.Column="0" Margin="5" BorderBrush="Black" BorderThickness="1" >
+                    <Image x:Name="ThirdImage" Width="50" Height="50" Stretch="UniformToFill" Source="D:\Sample\crystal.png"/>
                 </Border>
                 <TextBlock Grid.Column="1" Text="{Binding CImageName}" Margin="5, 0, 5,0" TextBlock.FontWeight="Bold" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="2" Text="{Binding Value}" Margin="5, 0, 5,0" TextBlock.FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                
             </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding EState}" Value="eFirst">
+                    <Setter TargetName="FirstImage" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="SecondImage" Property="Visibility" Value="Hidden"/>
+                    <Setter TargetName="ThirdImage" Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+                
+                <DataTrigger Binding="{Binding EState}" Value="eSecond">
+                    <Setter TargetName="FirstImage" Property="Visibility" Value="Hidden"/>
+                    <Setter TargetName="SecondImage" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="ThirdImage" Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding EState}" Value="eThird">
+                    <Setter TargetName="FirstImage" Property="Visibility" Value="Hidden"/>
+                    <Setter TargetName="SecondImage" Property="Visibility" Value="Hidden"/>
+                    <Setter TargetName="ThirdImage" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
         
     </Window.Resources>
@@ -62,7 +105,7 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="30"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="tbxReportUrl"  Grid.Column="0" Height="23" Width="auto" TextWrapping="Wrap" Text="{Binding SelectedItem.ItemName}"/>
+                        <TextBox x:Name="tbxReportUrl" Grid.Column="0" Height="23" Width="auto" TextWrapping="Wrap" Text="{Binding SelectedItem.ItemName}"/>
                         <Button  x:Name="btnReport" Grid.Column="1" Width="25" Margin="5, 0, 0, 0" Content="{Binding BtnContent}" 
                                  Command="{Binding BtnCommand}" CommandParameter="{Binding ElementName=ListContainer}">
                         </Button>

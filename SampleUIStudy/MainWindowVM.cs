@@ -68,17 +68,17 @@ namespace SampleUIStudy
 				cListItem citem = new cListItem();
 				citem.CImageName = "crystal.png";
 				citem.Value = 10;
-				citem.CImagePath = @"C:\Users\Partner\Desktop\Sample Attach Data\crystal.png";
+				citem.CImagePath = @"D:\Sample\crystal.png";
 
 				cListItem citem2 = new cListItem();
 				citem2.CImageName = "Down.png";
 				citem2.Value = -10;
-				citem2.CImagePath = @"C:\Users\Partner\Desktop\Sample Attach Data\Down.png";
+				citem2.CImagePath = @"D:\Sample\Down.png";
 
 				cListItem citem3 = new cListItem();
 				citem3.CImageName = "star.png";
 				citem3.Value = 0;
-				citem3.CImagePath = @"C:\Users\Partner\Desktop\Sample Attach Data\star.png";
+				citem3.CImagePath = @"D:\Sample\star.png";
 
 				List<cListItem> ciList = new List<cListItem>();
 
@@ -245,18 +245,21 @@ namespace SampleUIStudy
         public string UserPwd { get; set; }
     }
 
-	public class cListItem : INotifyPropertyChanged
-	{
-		#region NotifyProperty chaned
-		public event PropertyChangedEventHandler PropertyChanged;
-		[NotifyPropertyChangedInvocator]
-		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-		}
-		#endregion
+    public class MyNotifyChanged : INotifyPropertyChanged
+    {
+        #region NotifyProperty chaned
+        public event PropertyChangedEventHandler PropertyChanged;
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+    }
 
+    public class cListItem : MyNotifyChanged
+	{
 		private int _value;
 		public int Value
 		{
@@ -268,19 +271,23 @@ namespace SampleUIStudy
 			set
 			{
 				_value = value;
-				if (_value < 0)
-				{
-					ListItemVisible = Visibility.Hidden;
-					BackColor = new SolidColorBrush(Colors.Tomato);
-				}
-				else
-				{
-					ListItemVisible = Visibility.Visible;
-					if (_value == 0)
-						BackColor = new SolidColorBrush(Colors.Transparent);
-					else
-						BackColor = new SolidColorBrush(Colors.Turquoise);
-				}
+                if (value < 0)
+                {
+                    //MoreThanZero = false;
+                    EState = EImageSate.eFirst;
+                }
+                else if ( value == 0 )
+                {
+                    //MoreThanZero = false;
+                    EState = EImageSate.eSecond;
+                }
+                else
+                {
+                    //MoreThanZero = true;
+                    EState = EImageSate.eThird;
+                }
+
+                OnPropertyChanged("Value");
 			}
 		}
 
@@ -312,9 +319,59 @@ namespace SampleUIStudy
 			}
 		}
 
+        private bool _moreThanZero = false;
+        public bool MoreThanZero
+        {
+            get
+            {
+                return _moreThanZero;
+            }
+            set
+            {
+                _moreThanZero = value;
+
+                if (value == false)
+                {
+                    ListItemVisible = Visibility.Hidden;
+                    BackColor = new SolidColorBrush(Colors.Turquoise);
+                }
+                else
+                {
+                    ListItemVisible = Visibility.Visible;
+                    if (_value == 0)
+                        BackColor = new SolidColorBrush(Colors.Transparent);
+                    else
+                        BackColor = new SolidColorBrush(Colors.Tomato);
+                }
+
+                OnPropertyChanged("MoreThanZero");
+            }
+        }
+
+        private EImageSate _eState;
+        public EImageSate EState
+        {
+            get
+            {
+                return _eState;
+            }
+            set
+            {
+                _eState = value;
+                OnPropertyChanged("EState");
+            }
+        }
+
 		public string CImageName { get; set; }
 		public string CImagePath { get; set; }		
 	}
+
+    public enum EImageSate
+    {
+        eFirst = 0,
+        eSecond,
+        eThird
+    }
 
     public delegate void ListVisivilityAction(bool bOpen);
     public delegate void CheckedChangedRadioBtn(int index);
